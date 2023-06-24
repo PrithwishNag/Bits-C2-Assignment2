@@ -23,15 +23,14 @@ const Star = ({ fill, onClick }) => {
   );
 };
 
-const Rating = () => {
-  const [rating, setRating] = useState(0);
+const Rating = ({ rating, setRating }) => {
   let n = 5;
   var stars = [];
   for (let i = 0; i < n; i++) {
     stars.push(
       <Star
         key={i}
-        fill={i < rating ? true : false}
+        fill={rating === null ? false : i < rating ? true : false}
         onClick={() => {
           setRating(i + 1);
         }}
@@ -42,52 +41,62 @@ const Rating = () => {
 };
 
 const FeedbackModal = ({ show, onClose }) => {
+  const [rating, setRating] = useState(null);
   return (
-    <Popup open={show} onClose={onClose} modal nested>
-      {(close) => (
-        <div
-          className="modal"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            margin: "0px",
-            padding: "10px",
-            alignItems: "center",
-            backgroundColor: "#fdfd96",
-          }}
-        >
-          <div className="header" style={{ fontSize: "20px" }}>
-            Modal Title
-          </div>
+    <>
+      <Popup open={show} onClose={onClose} modal nested>
+        {(close) => (
           <div
-            className="content"
+            className="modal"
             style={{
-              marginTop: "10px",
+              display: "flex",
+              flexDirection: "column",
+              margin: "0px",
+              padding: "10px",
+              alignItems: "center",
+              backgroundColor: "#fdfd96",
             }}
           >
-            You have completed your ride!
-          </div>
-          <div>Please rate us</div>
-          <Rating />
-          <input style={{marginTop: "20px", width: "300px"}}></input>
-          <div className="actions" style={{marginTop: "20px"}}>
-            <button className="button" onClick={() => close()}>
-              Submit
-            </button>
-            <button
-              className="button"
-              onClick={() => close()}
+            <div className="header" style={{ fontSize: "20px" }}>
+              Feedback
+            </div>
+            <div
+              className="content"
               style={{
                 marginTop: "10px",
-                marginLeft: "10px",
               }}
             >
-              Close
-            </button>
+              You have completed your ride!
+            </div>
+            <div>Please rate us</div>
+            <Rating rating={rating} setRating={setRating} />
+            <input style={{ marginTop: "20px", width: "300px" }}></input>
+            <div className="actions" style={{ marginTop: "20px" }}>
+              <button
+                className="button"
+                onClick={() => {
+                  if (rating !== null)
+                    alert("THANK YOU!\nYour feeedback has been submitted");
+                  close();
+                }}
+              >
+                Submit
+              </button>
+              <button
+                className="button"
+                onClick={() => close()}
+                style={{
+                  marginTop: "10px",
+                  marginLeft: "10px",
+                }}
+              >
+                Close
+              </button>
+            </div>
           </div>
-        </div>
-      )}
-    </Popup>
+        )}
+      </Popup>
+    </>
   );
 };
 
