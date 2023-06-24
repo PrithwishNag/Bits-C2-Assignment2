@@ -1,0 +1,5 @@
+@font-face {
+  font-family: "Inter";
+  src: local("Inter"), url("../fonts/inter/Inter-Regular.ttf") format("truetype");
+  font-weight: normal;
+}
