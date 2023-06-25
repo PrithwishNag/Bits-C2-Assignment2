@@ -14,6 +14,12 @@ const RegisterPage = () => {
       alert("Registration failed: Empty fields");
       return;
     }
+    if(!new RegExp(
+      "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
+    ).test(username)) {
+      alert("Username is not a valid email");
+      return;
+    }
     if (
       !new RegExp(
         "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[@$!%*#?&])[A-Za-z0-9@$!%*#?&]{8,}$"
