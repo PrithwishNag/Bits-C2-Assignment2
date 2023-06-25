@@ -1,104 +1,8 @@
-import React, { useState } from "react";
-import Popup from "reactjs-popup";
+import { useState } from "react";
 import "reactjs-popup/dist/index.css";
 import currentLocationIcon from "../images/currentLocationIcon.svg";
+import { useNavigate } from "react-router-dom";
 import "../css/dashboardPage.css";
-
-const Star = ({ fill, onClick }) => {
-  return (
-    <label className="star" onClick={onClick}>
-      <svg
-        width="58"
-        height="58"
-        viewBox="0 0 24 24"
-        fill={fill ? "#393939" : "none"}
-        stroke="#393939"
-        strokeWidth="1"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-      </svg>
-    </label>
-  );
-};
-
-const Rating = ({ rating, setRating }) => {
-  let n = 5;
-  var stars = [];
-  for (let i = 0; i < n; i++) {
-    stars.push(
-      <Star
-        key={i}
-        fill={rating === null ? false : i < rating ? true : false}
-        onClick={() => {
-          setRating(i + 1);
-        }}
-      />
-    );
-  }
-  return <div style={{ display: "flex", marginTop: "20px" }}>{stars}</div>;
-};
-
-const FeedbackModal = ({ show, onClose }) => {
-  const [rating, setRating] = useState(null);
-  return (
-    <>
-      <Popup open={show} onClose={onClose} modal nested>
-        {(close) => (
-          <div
-            className="modal"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              margin: "0px",
-              padding: "10px",
-              alignItems: "center",
-              backgroundColor: "#fdfd96",
-            }}
-          >
-            <div className="header" style={{ fontSize: "20px" }}>
-              Feedback
-            </div>
-            <div
-              className="content"
-              style={{
-                marginTop: "10px",
-              }}
-            >
-              You have completed your ride!
-            </div>
-            <div>Please rate us</div>
-            <Rating rating={rating} setRating={setRating} />
-            <input style={{ marginTop: "20px", width: "300px" }}></input>
-            <div className="actions" style={{ marginTop: "20px" }}>
-              <button
-                className="button"
-                onClick={() => {
-                  if (rating !== null)
-                    alert("THANK YOU!\nYour feeedback has been submitted");
-                  close();
-                }}
-              >
-                Submit
-              </button>
-              <button
-                className="button"
-                onClick={() => close()}
-                style={{
-                  marginTop: "10px",
-                  marginLeft: "10px",
-                }}
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        )}
-      </Popup>
-    </>
-  );
-};
 
 const DashboardPage = () => {
   const [pickUpLocation, setPickUpLocation] = useState({
@@ -112,7 +16,7 @@ const DashboardPage = () => {
   });
   const [rideOptions, setRideOptions] = useState([]);
   const [showRideOptions, setShowRideOptions] = useState(false);
-  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+  const navigate = useNavigate();
 
   const myCurrentLocation = async () => {
     var pickUpLocationInput = document.querySelector("#pickUpLocation");
@@ -256,11 +160,20 @@ const DashboardPage = () => {
           <div style={{ marginTop: "30px", marginBottom: "10px" }}>
             Choose from the below ride options
           </div>
-          {rideOptions.map((option) => {
+          {rideOptions.map((option, key) => {
             return (
               <div
+                key={key}
                 className="dashboard-ride-options"
-                onClick={() => setShowFeedbackModal(true)}
+                onClick={() => {
+                  if (
+                    window.confirm(
+                      "Are you sure you want to confirm this ride options?"
+                    )
+                  ) {
+                    navigate("/rideStatus", { state: { id: option.id } });
+                  }
+                }}
               >
                 <div className="dashboard-ride-option">
                   {option.eta}
@@ -281,10 +194,6 @@ const DashboardPage = () => {
       ) : (
         <div></div>
       )}
-      <FeedbackModal
-        show={showFeedbackModal}
-        onClose={() => setShowFeedbackModal(false)}
-      />
     </div>
   );
 };

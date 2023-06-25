@@ -15,9 +15,14 @@ const LoginPage = () => {
   ];
 
   const handleSubmit = (event) => {
-    for (var x in userDetails) {
-      if (x["username"] === username && x["password"] === password)
+    for (let i = 0; i < userDetails.length; i++) {
+      if (
+        userDetails[i].username === username &&
+        userDetails[i].password === password
+      ) {
         navigate("/dashboard");
+        return;
+      }
     }
     alert(
       "Login failed\n\nTry with:\nusername: abc@xyz.com,\npassword: bits123"
