@@ -35,6 +35,7 @@ const RegisterPage = () => {
   return (
     <div class="container">
       <h1>RIDESHARE</h1>
+      <div style={{marginBottom: "10px"}}>Register</div>
       <form class="login-container" action="/">
         <div>
           <div class="key">Username</div>
