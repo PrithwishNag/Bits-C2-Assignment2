@@ -22,12 +22,18 @@ const DashboardPage = () => {
     var pickUpLocationInput = document.querySelector("#pickUpLocation");
     pickUpLocationInput.value = "";
     navigator.geolocation.getCurrentPosition(
-      (position) =>
+      (position) => {
         setPickUpLocation({
           set: true,
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
-        }),
+        });
+        console.log(
+          "Your location coordinates: \nLatitude:",
+          position.coords.latitude, "\nLongitude",
+          position.coords.longitude
+        );
+      },
       (err) => console.log(err)
     );
   };
