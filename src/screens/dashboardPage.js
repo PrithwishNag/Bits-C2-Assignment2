@@ -94,6 +94,7 @@ const DashboardPage = () => {
           <img
             style={{ marginLeft: "15px" }}
             src={currentLocationIcon}
+            alt="Current Location Icon"
             width="30px"
             onClick={myCurrentLocation}
           ></img>
