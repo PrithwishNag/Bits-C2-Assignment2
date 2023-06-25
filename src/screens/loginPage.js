@@ -47,6 +47,7 @@ const LoginPage = () => {
           <div>
             <input
               value={password}
+              type="password"
               onChange={(e) => setPassword(e.target.value)}
             ></input>
           </div>
